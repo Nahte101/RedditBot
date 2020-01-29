@@ -1,6 +1,7 @@
 import praw
 import time
 
+
 reddit = praw.Reddit(client_id='msA8YHPtMopEFg'
                     ,client_secret='iiqKiuOkS4bicJwyBiTq_hQ5lwQ',
                     username='Nahte101',
@@ -10,6 +11,7 @@ reddit = praw.Reddit(client_id='msA8YHPtMopEFg'
 subreddit_name = input("What subreddit to post to? (Case sensitive) ")
 
 subreddit = reddit.subreddit(subreddit_name)
+
 
 title = input("What shall the title of the post be? ")
 
@@ -29,8 +31,10 @@ if post_type == 'txt':
     nonTitleText = input("What will the text be below title? ")
 else:
     directory = input("Directory to file: ")
+
 time_to_post = input("Time to be posted (AU Time) mm:dd:hh:mm ")
-not_posted = True
+
+
 
 date_to_post = time_to_post.split(":")
 
@@ -44,19 +48,30 @@ def checkTimeArraysEqual(arr1,arr2):#must be of same length
 
 print("Waiting")
 
+not_posted = True
+
 while not_posted:
     currenttime = time.localtime(time.time())
     currentdatetime = currenttime[1:5]
     if checkTimeArraysEqual(date_to_post,currentdatetime):
         if post_type == 'img':
-            subreddit.submit_image(title=title, image_path=directory,without_websockets=True)
+            post = subreddit.submit_image(title=title, image_path=directory,without_websockets=True)
+            f = open((subreddit_name+".txt"),'w')
+            f.write(post.flair.choices())
+            f.close()
             not_posted = False
             print('posted')
         elif post_type == 'vid':
-            subreddit.submit_video(title=title, video_path=directory,without_websockets=True)
+            post = subreddit.submit_video(title=title, video_path=directory,without_websockets=True)
+            f = open((subreddit_name+".txt"),'w')
+            f.write(post.flair.choices())
+            f.close()
             not_posted = False
             print('posted')
         elif post_type == 'txt':
-            subreddit.submit(title=title,selftext=nonTitleText)
+            post = subreddit.submit(title=title,selftext=nonTitleText)
             not_posted = False
+            f = open((subreddit_name+".txt"),'w')
+            f.write(post.flair.choices())
+            f.close()
             print('posted')
