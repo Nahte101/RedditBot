@@ -2,6 +2,7 @@ import praw
 import time
 from post import Post
 from analytics import Analytic
+
 if __name__ == "__main__":
     
     reddit = praw.Reddit('personalAccount',
@@ -18,9 +19,11 @@ if __name__ == "__main__":
             month = int(input("What month would you like this to stop (num) "))
             day = int(input("What day would you like this to stop "))
             hour = int(input("What hour would you like this to stop (24 version) "))
-            minute = int(input("What minute would you like this to stop "))
+            hourInterval = int(input("How many times per hour should it check user count? "))
+            hourInterval = 1 / hourInterval
             analysis = Analytic(subreddit)
-            analysis.gatherActiveUsers(month,day,hour,minute)
+            analysis.gatherActiveUsers(hourInterval,month,day,hour)
+            goodInput = True
 
         elif choice == '2':
 

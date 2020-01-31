@@ -5,16 +5,16 @@ from extrafunctions import checkTimeArraysEqual
 class Post:
     def __init__(self, subreddit):
         self.subreddit = subreddit
-    
+
     def postImg(self, imgPath,title):
         self.subreddit.submit_image(title=title, image_path=imgPath,without_websockets=True)
-    
+
     def postVid(self, vidPath, title):
         self.subreddit.submit_video(title=title, video_path=vidPath,without_websockets=True)
-    
+
     def postTxt(self,txt,title):
         self.subreddit.submit(title=title,selftext=txt)
-
+        
     def delayPost(self,monthToPost,dayToPost,hourToPost,minuteToPost,postType,title,txt=None,filePath=None):
         
         notPosted = True
