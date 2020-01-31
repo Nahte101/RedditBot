@@ -4,11 +4,8 @@ from post import Post
 from analytics import Analytic
 if __name__ == "__main__":
     
-    reddit = praw.Reddit(client_id='msA8YHPtMopEFg'
-                        ,client_secret='iiqKiuOkS4bicJwyBiTq_hQ5lwQ',
-                        username='Nahte101',
-                        password='pokemon101',
-                        user_agent='idk')
+    reddit = praw.Reddit('personalAccount',
+                        user_agent='Personal Account')
 
     subredditName = input("What subreddit to use? (Case sensitive) ")
 
@@ -33,7 +30,7 @@ if __name__ == "__main__":
 
             goodInput = False
 
-            timeDelayed = bool(input("Would you like this to be time delayed? True or False (Case Sensitive) "))
+            timeDelayed = input("Would you like this to be time delayed? True or False (Case Sensitive) ") == 'True'
 
             while not goodInput:
 
