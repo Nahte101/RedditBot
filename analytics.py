@@ -1,6 +1,11 @@
 import time
 from extrafunctions import checkTimeArraysEqual
 
+"""Things to add:
+-MultiThreading
+-Finish method for getting the average post time for the most popular posts (custom time frame)
+"""
+
 class Analytic:
     def __init__(self, subreddit):
         self.subreddit = subreddit

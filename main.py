@@ -27,7 +27,7 @@ if __name__ == "__main__":
 
         elif choice == '2':
 
-            post = Post(subreddit)
+            poster = Poster(subreddit)
 
             title = input("What shall the title of the post be? ")
 
@@ -52,21 +52,21 @@ if __name__ == "__main__":
                 if timeDelayed:
                     timeToPost = input("Time to be posted (AU Time) mm:dd:hh:mm ")
                     dateToPost = timeToPost.split(":")
-                    post.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,txt=txt)
+                    poster.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,txt=txt)
                 else:
-                    post.postTxt(txt,title)
+                    poster.postTxt(txt,title)
             else:
                 directory = input("Directory to file: ")
                 if timeDelayed:
                     time_to_post = input("Time to be posted (AU Time) mm:dd:hh:mm ")
                     dateToPost = time_to_post.split(":")
                     if postType == 'img':
-                        post.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory)
+                        poster.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory)
                     else:
-                        post.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory)
+                        poster.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory)
                 else:
                     if postType == 'img':
-                        post.postImg(directory,title)
+                        poster.postImg(directory,title)
                     else:
-                        post.postVid(directory,title)
+                        poster.postVid(directory,title)
 

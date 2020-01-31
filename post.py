@@ -2,6 +2,9 @@ import praw
 import time
 from extrafunctions import checkTimeArraysEqual
 
+"""Things to add
+-MultiThreading"""
+
 class Post:#An object that stores a post
     def __init__(self,title,postType=None,txt=None,filePath=None):
         self.title = title
