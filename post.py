@@ -2,7 +2,14 @@ import praw
 import time
 from extrafunctions import checkTimeArraysEqual
 
-class Post:
+class Post:#An object that stores a post
+    def __init__(self,title,postType=None,txt=None,filePath=None):
+        self.title = title
+        self.postType = postType
+        self.txt = txt
+        self.filePath = filePath
+    
+class Poster:#Object that posts
     def __init__(self, subreddit):
         self.subreddit = subreddit
 
@@ -14,12 +21,29 @@ class Post:
 
     def postTxt(self,txt,title):
         self.subreddit.submit(title=title,selftext=txt)
-        
+    
+    def post(self,postObj):#For posting Post objects
+        if postObj.postType == "img":
+            self.postImg(postObj.filePath,postObj.title)
+        elif postObj.postType == 'vid':
+            self.postVid(postObj.filePath,postObj.title)
+        else:
+            self.postTxt(postObj.txt,postObj.title)
+
+    def postMultipleEveryTimeInterval(self,listOfPosts,HourlyIntervalToPost):#Post each post every HourlyIntervalToPost
+        for post in listOfPosts:
+            time.sleep(HourlyIntervalToPost*3600)
+            self.post(post)
+
+    def postMultiple(self,listOfPosts):
+        for post in listOfPosts:
+            self.post(post)
     def delayPost(self,monthToPost,dayToPost,hourToPost,minuteToPost,postType,title,txt=None,filePath=None):
         
         notPosted = True
         dateToPost = [monthToPost,dayToPost,hourToPost,minuteToPost]
         print("Waiting")
+        
         while notPosted:
 
             currentTime = time.localtime(time.time())

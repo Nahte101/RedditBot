@@ -1,6 +1,6 @@
 import praw
 import time
-from post import Post
+from post import Poster
 from analytics import Analytic
 
 if __name__ == "__main__":
