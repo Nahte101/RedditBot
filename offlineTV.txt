@@ -1,0 +1,13 @@
+Time Started(2020, 1, 31, 20, 49)Interval checkingin secs: 360.0
+Hour (0.1 hour) : 0 Active Users: 650
+Hour (0.1 hour) : 1 Active Users: 712
+Hour (0.1 hour) : 2 Active Users: 743
+Hour (0.1 hour) : 3 Active Users: 806
+Hour (0.1 hour) : 4 Active Users: 820
+Hour (0.1 hour) : 5 Active Users: 800
+Hour (0.1 hour) : 6 Active Users: 693
+Hour (0.1 hour) : 7 Active Users: 661
+Hour (0.1 hour) : 8 Active Users: 650
+Hour (0.1 hour) : 9 Active Users: 693
+Hour (0.1 hour) : 10 Active Users: 619
+Hour (0.1 hour) : 11 Active Users: 597

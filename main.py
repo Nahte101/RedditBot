@@ -16,14 +16,25 @@ if __name__ == "__main__":
     while not goodInput:
         choice = input("Do you want to get statistics or post (1 or 2) ")
         if choice == '1':
-            month = int(input("What month would you like this to stop (num) "))
-            day = int(input("What day would you like this to stop "))
-            hour = int(input("What hour would you like this to stop (24 version) "))
-            hourInterval = int(input("How many times per hour should it check user count? "))
-            hourInterval = 1 / hourInterval
             analysis = Analytic(subreddit)
-            analysis.gatherActiveUsers(hourInterval,month,day,hour)
-            goodInput = True
+            while not goodInput:
+                choice = int(input('Track Active Users/Avg Time posted for popular posts/Read saved active user file (1/2/3)'))
+                if choice == 1:
+                    month = int(input("What month would you like this to stop (num) "))
+                    day = int(input("What day would you like this to stop "))
+                    hour = int(input("What hour would you like this to stop (24 version) "))
+                    hourInterval = int(input("How many times per hour should it check user count? "))
+                    hourInterval = 1 / hourInterval
+                    analysis.gatherActiveUsers(hourInterval,month,day,hour)
+                    goodInput = True
+                elif choice == 2:
+                    timeFrame = input("What time frame would u like for popular posts? ")
+                    postNum = int(input("How many posts will be used? "))
+                    analysis.avgTimePostedForPopularPosts(timeFrame,limit=postNum)
+                    goodInput = True
+                elif choice == 3:
+                    analysis.readAnalytics()
+                    goodInput = True
 
         elif choice == '2':
 
