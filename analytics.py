@@ -1,10 +1,10 @@
 import time
 import datetime
+import ast
 from extrafunctions import checkTimeArraysEqual
 
 """Things to add:
 -MultiThreading
--Finish method for getting the average post time for the most popular posts (custom time frame)
 -Reading analytics from file
 """
 
@@ -18,14 +18,15 @@ class Analytic:
         dateToEnd = [monthToStop,dayToStop,hourToStop]
 
         f = open((self.subreddit.display_name+".txt"),'a')
-        f.write("Time Started"+str(time.localtime(time.time())[0:5])+" Interval checking in secs: "+str(intervalToCheck)+"\n")
+        f.write("\"Time Started\" :"+str(time.localtime(time.time())[0:5])+", \"Interval checking in secs\" : "+str(intervalToCheck)+",")
         print("Waiting")
-        
+        f.write("{")
         while not checkTimeArraysEqual(time.localtime(time.time())[1:4],dateToEnd):
             self.subreddit._fetch() #updates subreddits fields
-            f.write("Hour ("+str(hourIntervalToCheck)+" hour) : "+str(hourIntervalCount)+" Active Users: "+str(self.subreddit.active_user_count)+"\n")
+            f.write("\""+str(hourIntervalCount)+"\" : "+str(self.subreddit.active_user_count)+",")
             time.sleep(intervalToCheck)
             hourIntervalCount += 1
+        f.write("}")
         f.close()
     def avgTimePostedForPopularPosts(self,timeFrame, limit=100):
         topPosts = self.subreddit.top(time_filter=timeFrame,limit=limit)
@@ -40,11 +41,12 @@ class Analytic:
         hourAvg /= postCount
         minuteAvg /= postCount
         print("Hour Avg: ",hourAvg," Minute Avg: ",minuteAvg)
+        return (hourAvg,minuteAvg)
     def readAnalytics(self, filePath=None):
         if (filePath == None):
             f = open((self.subreddit.display_name+".txt"),'r')
         else:
             f = open(filePath,'r')
-        for line in str.splitlines(f.read()):
-            print(line)
-        f.close()
+        values = ast.literal_eval(f.read())
+        f.close()  
+        return values
