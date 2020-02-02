@@ -33,7 +33,7 @@ if __name__ == "__main__":
                     analysis.avgTimePostedForPopularPosts(timeFrame,limit=postNum)
                     goodInput = True
                 elif choice == 3:
-                    analysis.readAnalytics()
+                    print(str(analysis.readAnalytics()))
                     goodInput = True
 
         elif choice == '2':

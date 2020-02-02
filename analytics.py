@@ -18,9 +18,8 @@ class Analytic:
         dateToEnd = [monthToStop,dayToStop,hourToStop]
 
         f = open((self.subreddit.display_name+".txt"),'a')
-        f.write("\"Time Started\" :"+str(time.localtime(time.time())[0:5])+", \"Interval checking in secs\" : "+str(intervalToCheck)+",")
+        f.write("{\"Time Started\" :"+str(time.localtime(time.time())[0:5])+", \"Interval checking in secs\" : "+str(intervalToCheck)+",")
         print("Waiting")
-        f.write("{")
         while not checkTimeArraysEqual(time.localtime(time.time())[1:4],dateToEnd):
             self.subreddit._fetch() #updates subreddits fields
             f.write("\""+str(hourIntervalCount)+"\" : "+str(self.subreddit.active_user_count)+",")
