@@ -2,10 +2,11 @@ import time
 import datetime
 import ast
 from extrafunctions import checkTimeArraysEqual
+from threadManger import ThreadManager
 
 """Things to add:
 -MultiThreading
--Reading analytics from file
+-MultiProcessing
 """
 
 class Analytic:

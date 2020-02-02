@@ -10,6 +10,11 @@ class ThreadManager:
     def flagAllAsQuittable(self):#sets all threads to daemon so when main program exits program completes
         for thread in self.threads:
             thread.daemon = True
+    def focusThread(self,threadName):#Focuses a thread to finish it before doing anything after it
+        self.threads[threadName].join()
+    def focusAllThreads(self):
+        for thread in self.threads:
+            thread.join()
     def start(self, threadName):
         self.threads[threadName].start()
     def startAll(self):
@@ -21,7 +26,5 @@ class ThreadManager:
         self.threads[thread.name] = thread
     def isThreadAlive(self, threadName):
         return self.threads[threadName].is_alive()
-    def getAllLiveThreads(self):
-        return threading.enumerate()
     def removeThread(self,threadName):
         self.threads.pop(threadName)
