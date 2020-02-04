@@ -79,7 +79,7 @@ if __name__ == "__main__":
                     if postType == 'img':
                         poster.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory)
                     else:
-                        poster.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory)
+                        poster.delayPost(dateToPost[0],dateToPost[1],dateToPost[2],dateToPost[3],postType,title,filePath=directory,thumbnailPath=thumbnail)
                 else:
                     if postType == 'img':
                         poster.postImg(directory,title)
