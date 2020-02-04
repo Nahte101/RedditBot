@@ -21,8 +21,8 @@ class Poster:#Object that posts
     def postImg(self, imgPath,title):
         self.subreddit.submit_image(title=title, image_path=imgPath,without_websockets=True)
 
-    def postVid(self, vidPath, title):
-        self.subreddit.submit_video(title=title, video_path=vidPath,without_websockets=True)
+    def postVid(self, vidPath, title,thumbnail=None):
+        self.subreddit.submit_video(title=title, video_path=vidPath,without_websockets=True,thumbnail_path=thumbnail)
 
     def postTxt(self,txt,title):
         self.subreddit.submit(title=title,selftext=txt)
@@ -43,7 +43,7 @@ class Poster:#Object that posts
     def postMultiple(self,listOfPosts):
         for post in listOfPosts:
             self.post(post)
-    def delayPost(self,monthToPost,dayToPost,hourToPost,minuteToPost,postType,title,txt=None,filePath=None):
+    def delayPost(self,monthToPost,dayToPost,hourToPost,minuteToPost,postType,title,txt=None,filePath=None,thumbnailPath=None):
         
         notPosted = True
         dateToPost = [monthToPost,dayToPost,hourToPost,minuteToPost]
@@ -65,7 +65,7 @@ class Poster:#Object that posts
                     notPosted = False
                     print('posted')
                 elif postType == 'vid':
-                    self.postVid(filePath,title)
+                    self.postVid(filePath,title,thumbnailPath)
                     notPosted = False
                     print('posted')
                 else:

@@ -2,6 +2,7 @@ import praw
 import time
 from post import Poster
 from analytics import Analytic
+from threadManger import ThreadManager
 
 if __name__ == "__main__":
     
@@ -11,6 +12,7 @@ if __name__ == "__main__":
     subredditName = input("What subreddit to use? (Case sensitive) ")
 
     subreddit = reddit.subreddit(subredditName)
+    threads = ThreadManager()#Main needs rework to use threading
 
     goodInput = False
     while not goodInput:
@@ -68,6 +70,9 @@ if __name__ == "__main__":
                     poster.postTxt(txt,title)
             else:
                 directory = input("Directory to file: ")
+                thumbnail = None
+                if input("Would u like a thumbnail? True or False") == 'True':
+                    thumbnail = input("Directory to thumbnail: ")
                 if timeDelayed:
                     time_to_post = input("Time to be posted (AU Time) mm:dd:hh:mm ")
                     dateToPost = time_to_post.split(":")
@@ -79,5 +84,6 @@ if __name__ == "__main__":
                     if postType == 'img':
                         poster.postImg(directory,title)
                     else:
-                        poster.postVid(directory,title)
+                        poster.postVid(directory,title,thumbnail)
+            print('posted')
 
