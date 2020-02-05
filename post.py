@@ -60,7 +60,7 @@ class Poster:#Object that posts
                     self.postTxt(txt,title)
                     notPosted = False
                     print('posted')
-                if postType == 'img':
+                elif postType == 'img':
                     self.postImg(filePath,title)
                     notPosted = False
                     print('posted')
@@ -69,7 +69,7 @@ class Poster:#Object that posts
                     notPosted = False
                     print('posted')
                 else:
-                    print("Invalid Post Type")
+                    print("Invalid Post Type : ",str(postType))
 
 
     
