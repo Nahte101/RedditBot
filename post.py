@@ -47,7 +47,6 @@ class Poster:#Object that posts
         
         notPosted = True
         dateToPost = [monthToPost,dayToPost,hourToPost,minuteToPost]
-        print("Waiting")
         
         while notPosted:
 
