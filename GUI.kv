@@ -1,0 +1,59 @@
+WindowManager:
+    StartUpWindow:
+    PostWindow:
+    AnalyticWindow:
+
+<StartUpWindow>:
+    name: "startup"
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        Image:
+            source: "reddit.png"
+            pos_hint: {"x": 0.40, "y": 0.7}
+            size_hint: 0.2, 0.2
+            allow_stretch: False
+        Label:
+            size_hint: 0.25, 0.05
+            color: 0,0,0,1
+            pos_hint: {"x": 0.25, "y": 0.5}
+            text: "Username: "
+        TextInput:
+            id: "user"
+            pos_hint: {"x": 0.50, "y": 0.5}
+            size_hint: 0.2, 0.05
+            multiline: False
+        Label:
+            size_hint: 0.25, 0.05
+            color: 0,0,0,1
+            pos_hint: {"x": 0.25, "y": 0.4}
+            text: "Password: "
+        TextInput:
+            id: "pass"
+            pos_hint: {"x": 0.50, "y": 0.4}
+            size_hint: 0.2, 0.05
+            multiline: False
+        Button:
+            background_normal: ''
+            background_color: 1, .25, 0, 1
+            #background_color: 1, .345, 0, 1 for when clicked still haven't figured that out yet
+            id: "login"
+            text: "Login"
+            pos_hint: {"x": 0.40, "y": 0.2}
+            size_hint: 0.2,0.1
+        
+
+<PostWindow>:
+    name: "post"
+    Button:
+        text: "Back"
+        on_release: 
+            app.root.current = "startup"
+            root.manager.transition.direction = "right"
+
+<AnalyticWindow>:
+    name: "analyse"
