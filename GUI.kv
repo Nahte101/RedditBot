@@ -1,3 +1,5 @@
+#:kivy 1.11.1
+
 WindowManager:
     StartUpWindow:
     PostWindow:
@@ -5,7 +7,15 @@ WindowManager:
 
 <StartUpWindow>:
     name: "startup"
+    layout: layout
+    username: username
+    password: password
+    userLabel: userLabel
+    passLabel: passLabel
+    loginButton: login
+
     FloatLayout:
+        id: layout
         canvas.before:
             Color:
                 rgba: 1, 1, 1, 1
@@ -18,22 +28,24 @@ WindowManager:
             size_hint: 0.2, 0.2
             allow_stretch: False
         Label:
+            id: userLabel
             size_hint: 0.25, 0.05
             color: 0,0,0,1
             pos_hint: {"x": 0.25, "y": 0.5}
             text: "Username: "
         TextInput:
-            id: "user"
+            id: username
             pos_hint: {"x": 0.50, "y": 0.5}
             size_hint: 0.2, 0.05
             multiline: False
         Label:
+            id: passLabel
             size_hint: 0.25, 0.05
             color: 0,0,0,1
             pos_hint: {"x": 0.25, "y": 0.4}
             text: "Password: "
         TextInput:
-            id: "pass"
+            id: password
             pos_hint: {"x": 0.50, "y": 0.4}
             size_hint: 0.2, 0.05
             multiline: False
@@ -41,19 +53,25 @@ WindowManager:
             background_normal: ''
             background_color: 1, .25, 0, 1
             #background_color: 1, .345, 0, 1 for when clicked still haven't figured that out yet
-            id: "login"
+            id: login
             text: "Login"
             pos_hint: {"x": 0.40, "y": 0.2}
             size_hint: 0.2,0.1
+            on_release:
+                root.manager.transition.direction = "left" 
+                root.loginSuccess() if root.login(username.text,password.text) else print("FAILED")
+                
+                root.resetTextFields() 
         
 
 <PostWindow>:
     name: "post"
-    Button:
-        text: "Back"
-        on_release: 
-            app.root.current = "startup"
-            root.manager.transition.direction = "right"
+    StackLayout:
+        Button:
+            text: "Back"
+            on_release: 
+                app.root.current = "startup"
+                root.manager.transition.direction = "right"
 
 <AnalyticWindow>:
     name: "analyse"
