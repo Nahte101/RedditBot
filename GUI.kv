@@ -68,39 +68,48 @@ WindowManager:
 
 <PostWindow>:
     name: "post"
-    StackLayout:
-        canvas.before:
-            Color:
-                rgba: 1, 1, 1, 1
-            Rectangle:
-                pos: self.pos
-                size: self.size
-        minimum_width: 10
-        orientation: 'lr-tb'
-        padding: 1
+    middleWidget: paraText
+    GridLayout:
+        cols: 4
+        pos_hint: {"top":0.97,"x":0.02}
+        size_hint: (0.96,0.05)
         Button:
             text: "Back"
             color: 0,0,0,1
-            size_hint: [.2,.1]
+            #size_hint: [0.2,0.1]
             on_release: 
                 app.root.current = "startup"
                 root.manager.transition.direction = "right"
                 app.root.startWindow.resetLoginWidgets()
         Label:
-            size_hint: [.2,.1]
-            color: 0,0,0,1
-            text: "Subreddit Name"
+            text: "Subreddit Name: "
+            #size_hint: [0.2,0.1]
         TextInput:
-            size_hint: [.2,.1]
-            text: "Subreddit Name"
-            muliline: False
+            id: newSub
+            multiline: False
         Button:
-            text: "Change"
-            size_hint: [.2,.1]
-            on_release:
+            text:"Change"
+    GridLayout:
+        pos_hint: {"top":0.90,"x":0.02}
+        size_hint: (0.96,0.85)
+        spacing: [1,0]
+        cols:1
+        TextInput:
+            text: "Title"
+            size_hint: [0.2,0.1]
+        TextInput:
+            id: paraText
+            text: "Text underneath title"
+        GridLayout:
+            size_hint: [0.2,0.1]
+            cols: 3
+            Button:
+                text:"Txt"
+            Button:
+                text:"Img"
+            Button:
+                text:"Vid"
 
-        
-        
-
+            
 <AnalyticWindow>:
     name: "analyse"
