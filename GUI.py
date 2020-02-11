@@ -1,5 +1,5 @@
 from kivy.app import App
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, ListProperty
 from kivy.lang import Builder
 from kivy.uix.label import Label
 from kivy.uix.button import Button
@@ -18,6 +18,8 @@ class StartUpWindow(Screen):
     layout = ObjectProperty(None)
     loginButton = ObjectProperty(None)
 
+    StageTwoWidgetList = ListProperty([])
+
     def login(self, username,password):
         try:
             global reddit
@@ -33,28 +35,83 @@ class StartUpWindow(Screen):
         self.username.text = ""
         self.password.text = ""
         print("ey")
-    def resetLoginWidgets(self):#Adds the original main screen widgets back
-        pass
+    def loginButtonTrigger(self, button):
+        self.parent.transition.direction = "left" 
+        if self.login(self.username.text,self.password.text):
+            self.loginSuccess()
+        else:
+            print("FAILED")
+        self.resetTextFields()
+
+    def resetLoginWidgets(self):#Adds the original main screen widgets back as well as removing others
+        self.layout.clear_widgets(self.StageTwoWidgetList)
+
+        self.userLabel = Label(
+            id = 'userLabel',
+            size_hint = (0.25, 0.05),
+            color = (0,0,0,1),
+            pos_hint = {"x": 0.25, "y": 0.5},
+            text= "Username: ")
+        self.layout.add_widget(self.userLabel)
+
+        self.username = TextInput(
+            id='username',
+            pos_hint = {"x": 0.50, "y": 0.5},
+            size_hint= (0.2, 0.05),
+            multiline =False)
+        self.layout.add_widget(self.username)
+
+        self.passLabel = Label(
+            id='passLabel',
+            size_hint= (0.25, 0.05),
+            color= (0,0,0,1),
+            pos_hint = {"x": 0.25, "y": 0.4},
+            text = "Password: ")
+        self.layout.add_widget(self.passLabel)
+
+        self.password = TextInput(
+            id='password',
+            pos_hint={"x": 0.50, "y": 0.4},
+            size_hint= (0.2, 0.05),
+            multiline=False)
+        self.layout.add_widget(self.password)
+        self.loginButton = Button(
+            background_normal= '',
+            background_color= (1, .25, 0, 1),
+            id= 'login',
+            text="Login",
+            pos_hint= {"x": 0.40, "y": 0.2},
+            size_hint= (0.2,0.1))
+                
+        self.loginButton.bind(on_press=self.loginButtonTrigger)
+        self.layout.add_widget(self.loginButton)
+            
     def goToPost(self,button):
-        self.parent.current = "post"#trying to do the same as inside the kv file
+        self.parent.current = "post"
+
     def loginSuccess(self):
         self.layout.remove_widget(self.userLabel)
         self.layout.remove_widget(self.passLabel)
         self.layout.remove_widget(self.username)
         self.layout.remove_widget(self.password)
         self.layout.remove_widget(self.loginButton)
-        self.layout.add_widget(Label(size_hint=(0.25, 0.05),
+        subredditLabel = Label(size_hint=(0.25, 0.05),
                                     color=(0,0,0,1),
                                     pos_hint={"x": 0.25, "y": 0.4},
-                                    text="Subreddit Name: "))
-        self.layout.add_widget(TextInput(pos_hint ={"x": 0.50, "y": 0.4},
+                                    text="Subreddit Name: ")
+        self.StageTwoWidgetList.append(subredditLabel)
+        self.layout.add_widget(subredditLabel)
+        subredditInput = TextInput(pos_hint ={"x": 0.50, "y": 0.4},
                                         size_hint= (0.2, 0.05),
-                                        multiline = False))#TextInput
+                                        multiline = False)
+        self.StageTwoWidgetList.append(subredditInput)
+        self.layout.add_widget(subredditInput)#TextInput
         confirm = Button(background_normal='',
                                         background_color = (1, .25, 0, 1),
                                         text="Confirm",
                                         pos_hint ={"x": 0.40, "y": 0.2},
                                         size_hint = (0.2,0.1))
+        self.StageTwoWidgetList.append(confirm)
         confirm.bind(on_press=self.goToPost)
         self.layout.add_widget(confirm)#Confirm Button
         
@@ -67,7 +124,7 @@ class AnalyticWindow(Screen):
     pass
 
 class WindowManager(ScreenManager):
-    pass
+    startWindow = ObjectProperty(None)
 
 kv = Builder.load_file("GUI.kv")
 

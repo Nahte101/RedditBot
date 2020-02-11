@@ -1,7 +1,9 @@
 #:kivy 1.11.1
 
 WindowManager:
+    startWindow: start
     StartUpWindow:
+        id: start
     PostWindow:
     AnalyticWindow:
 
@@ -67,11 +69,38 @@ WindowManager:
 <PostWindow>:
     name: "post"
     StackLayout:
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        minimum_width: 10
+        orientation: 'lr-tb'
+        padding: 1
         Button:
             text: "Back"
+            color: 0,0,0,1
+            size_hint: [.2,.1]
             on_release: 
                 app.root.current = "startup"
                 root.manager.transition.direction = "right"
+                app.root.startWindow.resetLoginWidgets()
+        Label:
+            size_hint: [.2,.1]
+            color: 0,0,0,1
+            text: "Subreddit Name"
+        TextInput:
+            size_hint: [.2,.1]
+            text: "Subreddit Name"
+            muliline: False
+        Button:
+            text: "Change"
+            size_hint: [.2,.1]
+            on_release:
+
+        
+        
 
 <AnalyticWindow>:
     name: "analyse"
