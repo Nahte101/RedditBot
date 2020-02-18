@@ -1,10 +1,14 @@
 from kivy.app import App
-from kivy.properties import ObjectProperty, ListProperty
+from kivy.properties import ObjectProperty, ListProperty, StringProperty
 from kivy.lang import Builder
+from kivy.core.window import Window
+from kivy.uix.image import Image
+from kivy.uix.video import Video
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.uix.screenmanager import ScreenManager, Screen 
+from kivy.uix.screenmanager import ScreenManager, Screen
+
 import praw
 
 reddit = None
@@ -88,6 +92,7 @@ class StartUpWindow(Screen):
             
     def goToPost(self,button):
         self.parent.current = "post"
+        self.parent.current_window = 'post'
 
     def loginSuccess(self):
         self.layout.remove_widget(self.userLabel)
@@ -114,23 +119,71 @@ class StartUpWindow(Screen):
         self.StageTwoWidgetList.append(confirm)
         confirm.bind(on_press=self.goToPost)
         self.layout.add_widget(confirm)#Confirm Button
-        
-        
 
 class PostWindow(Screen):
-    pass
+    post_type = StringProperty()
+
+    text_post_widget = ObjectProperty(None)
+    img_post_widget = ObjectProperty(None)
+    vid_post_widget = ObjectProperty(None)
+    post_container = ObjectProperty(None)
+
+#schedule this to do when button to change posttype is clicked
+    def change_post_type(self, post_type=None):
+        if post_type == None:
+            post_type = self.post_type
+
+        if post_type == 'img':
+            self.add_img_widget()
+        elif post_type == 'vid':
+            self.add_vid_widget()
+        else:
+            self.add_txt_widget()   
+        
+    def remove_main_post_widget(self):
+        self.post_container.clear_widgets()
+
+    def add_vid_widget(self):
+        vid = Video(id='vid_post',pos_hint={"top":0.99,"x":0.001},
+                size_hint=[0.999,0.96])
+        self.post_container.add_widget(vid)
+    def add_img_widget(self):
+        img = Image(id='img_post',pos_hint={"top":0.99,"x":0.001},
+                size_hint=[0.999,0.96])
+        self.post_container.add_widget(img)
+    def add_txt_widget(self):
+        txt = TextInput(id='paraText',text="Text underneath title",pos_hint={"top":0.99,"x":0.001},
+                size_hint=[0.999,0.96])
+        self.post_container.add_widget(txt)
+
 
 class AnalyticWindow(Screen):
     pass
 
 class WindowManager(ScreenManager):
-    startWindow = ObjectProperty(None)
+    start_window = ObjectProperty(None)
+    post_window = ObjectProperty(None)
+    analyse_window = ObjectProperty(None)
 
 kv = Builder.load_file("GUI.kv")
 
 class GUIApp(App):
     def build(self):
+        Window.bind(on_dropfile=self._on_file_drop)
         return kv
+    def _on_file_drop(self, widget, file_path):
+        if self.root.current == "post":
+            post_type = self.root.post_window.post_type
+            print(post_type)
+            temp = str(file_path).replace("\'","")
+            self.file_path = temp[1:len(temp)]
+            if post_type == 'vid':    
+                print(self.file_path)
+                self.root.post_window.child.
+            elif post_type == 'img':
+                print(self.file_path)
+                self.root.post_window.
+            return
 
 if __name__ == '__main__':
     GUIApp().run()

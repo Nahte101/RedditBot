@@ -1,11 +1,15 @@
 #:kivy 1.11.1
 
 WindowManager:
-    startWindow: start
+    start_window: start
+    post_window: post
+    analyse_window: analyse
     StartUpWindow:
         id: start
     PostWindow:
+        id: post
     AnalyticWindow:
+        id: analyse
 
 <StartUpWindow>:
     name: "startup"
@@ -62,28 +66,27 @@ WindowManager:
             on_release:
                 root.manager.transition.direction = "left" 
                 root.loginSuccess() if root.login(username.text,password.text) else print("FAILED")
-                
                 root.resetTextFields() 
         
 
 <PostWindow>:
     name: "post"
-    middleWidget: paraText
+    post_type:
+    post_container: post_container 
+    text_post_widget: paraText
+
     GridLayout:
         cols: 4
         pos_hint: {"top":0.97,"x":0.02}
         size_hint: (0.96,0.05)
         Button:
             text: "Back"
-            color: 0,0,0,1
-            #size_hint: [0.2,0.1]
             on_release: 
                 app.root.current = "startup"
                 root.manager.transition.direction = "right"
-                app.root.startWindow.resetLoginWidgets()
+                app.root.start_window.resetLoginWidgets()
         Label:
             text: "Subreddit Name: "
-            #size_hint: [0.2,0.1]
         TextInput:
             id: newSub
             multiline: False
@@ -97,18 +100,34 @@ WindowManager:
         TextInput:
             text: "Title"
             size_hint: [0.2,0.1]
-        TextInput:
-            id: paraText
-            text: "Text underneath title"
+        FloatLayout:
+            id: post_container
+            TextInput:
+                pos_hint:{"top":0.99,"x":0.001}
+                size_hint: [0.999,0.96]
+                id: paraText
+                text: "Text underneath title"
         GridLayout:
             size_hint: [0.2,0.1]
             cols: 3
             Button:
                 text:"Txt"
+                on_release:
+                    self.parent.parent.parent.post_type = 'txt'
+                    self.parent.parent.parent.remove_main_post_widget()
+                    self.parent.parent.parent.change_post_type()
             Button:
                 text:"Img"
+                on_release:
+                    self.parent.parent.parent.post_type = 'img'
+                    self.parent.parent.parent.remove_main_post_widget()
+                    self.parent.parent.parent.change_post_type()
             Button:
                 text:"Vid"
+                on_release:
+                    self.parent.parent.parent.post_type = 'vid'
+                    self.parent.parent.parent.remove_main_post_widget()
+                    self.parent.parent.parent.change_post_type()
 
             
 <AnalyticWindow>:
