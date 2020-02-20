@@ -166,21 +166,6 @@ class PostWindow(Screen):
             self.vid_post_widget.opacity = 0
             self.vid_post_widget.disabled = True
 
-"""
-    def add_vid_widget(self):
-        vid = Video(id='vid_post',pos_hint={"top":0.99,"x":0.001},
-                size_hint=[0.999,0.96],source="")
-        self.post_container.add_widget(vid)
-    def add_img_widget(self):
-        img = Image(id='img_post',pos_hint={"top":0.99,"x":0.001},
-                size_hint=[0.999,0.96])
-        self.post_container.add_widget(img)
-    def add_txt_widget(self):
-        txt = TextInput(id='paraText',text="Text underneath title",pos_hint={"top":0.99,"x":0.001},
-                size_hint=[0.999,0.96])
-        self.post_container.add_widget(txt)
-"""
-
 class AnalyticWindow(Screen):
     pass
 
@@ -210,7 +195,8 @@ class GUIApp(App):
                 
             elif post_type == 'img':
                 print(self.file_path)
-                self.root.get_screen('post').ids.img_post_widget.source = self.file_path
+                print("IMAGE: ",self.root.post_window.img_post_widget)
+                self.root.post_window.img_post_widget.source = self.file_path
 
 if __name__ == '__main__':
     GUIApp().run()
