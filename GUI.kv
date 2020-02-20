@@ -1,6 +1,6 @@
 #:kivy 1.11.1
 
-WindowManager:
+<WindowManager>:
     start_window: start
     post_window: post
     analyse_window: analyse
@@ -74,6 +74,8 @@ WindowManager:
     post_type:
     post_container: post_container 
     text_post_widget: paraText
+    vid_post_widget: vid_post
+    img_post_widget: img_post
 
     GridLayout:
         cols: 4
@@ -102,6 +104,15 @@ WindowManager:
             size_hint: [0.2,0.1]
         FloatLayout:
             id: post_container
+            Video:
+                id:vid_post
+                pos_hint:{"top":0.99,"x":0.001}
+                size_hint:[0.999,0.96]
+            Image:
+                id:img_post
+                pos_hint:{"top":0.99,"x":0.001}
+                size_hint:[0.999,0.96]
+                source:
             TextInput:
                 pos_hint:{"top":0.99,"x":0.001}
                 size_hint: [0.999,0.96]
@@ -114,20 +125,20 @@ WindowManager:
                 text:"Txt"
                 on_release:
                     self.parent.parent.parent.post_type = 'txt'
-                    self.parent.parent.parent.remove_main_post_widget()
-                    self.parent.parent.parent.change_post_type()
+                    self.parent.parent.parent.focus_main_widget()
+                    #self.parent.parent.parent.change_post_type()
             Button:
                 text:"Img"
                 on_release:
                     self.parent.parent.parent.post_type = 'img'
-                    self.parent.parent.parent.remove_main_post_widget()
-                    self.parent.parent.parent.change_post_type()
+                    self.parent.parent.parent.focus_main_widget()
+                    #self.parent.parent.parent.change_post_type()
             Button:
                 text:"Vid"
                 on_release:
                     self.parent.parent.parent.post_type = 'vid'
-                    self.parent.parent.parent.remove_main_post_widget()
-                    self.parent.parent.parent.change_post_type()
+                    self.parent.parent.parent.focus_main_widget()
+                    #self.parent.parent.parent.change_post_type()
 
             
 <AnalyticWindow>:

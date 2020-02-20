@@ -22,6 +22,8 @@ class StartUpWindow(Screen):
     layout = ObjectProperty(None)
     loginButton = ObjectProperty(None)
 
+    
+
     StageTwoWidgetList = ListProperty([])
 
     def login(self, username,password):
@@ -38,7 +40,6 @@ class StartUpWindow(Screen):
     def resetTextFields(self):
         self.username.text = ""
         self.password.text = ""
-        print("ey")
     def loginButtonTrigger(self, button):
         self.parent.transition.direction = "left" 
         if self.login(self.username.text,self.password.text):
@@ -121,14 +122,14 @@ class StartUpWindow(Screen):
         self.layout.add_widget(confirm)#Confirm Button
 
 class PostWindow(Screen):
-    post_type = StringProperty()
+    post_type = StringProperty(defaultvalue='txt')
 
     text_post_widget = ObjectProperty(None)
     img_post_widget = ObjectProperty(None)
     vid_post_widget = ObjectProperty(None)
     post_container = ObjectProperty(None)
 
-#schedule this to do when button to change posttype is clicked
+
     def change_post_type(self, post_type=None):
         if post_type == None:
             post_type = self.post_type
@@ -140,12 +141,35 @@ class PostWindow(Screen):
         else:
             self.add_txt_widget()   
         
-    def remove_main_post_widget(self):
-        self.post_container.clear_widgets()
+    def focus_main_widget(self):
+        post_type = self.post_type
 
+        if post_type =='vid':
+            self.vid_post_widget.opacity = 1
+            self.vid_post_widget.disabled = False
+            self.img_post_widget.opacity = 0
+            self.img_post_widget.disabled = True
+            self.text_post_widget.opacity = 0
+            self.text_post_widget.disabled = True
+        elif post_type =='img':
+            self.img_post_widget.opacity = 1
+            self.img_post_widget.disabled = False
+            self.text_post_widget.opacity = 0
+            self.text_post_widget.disabled = True
+            self.vid_post_widget.opacity = 0
+            self.vid_post_widget.disabled = True
+        else:#assume post type is txt
+            self.text_post_widget.opacity = 1
+            self.text_post_widget.disabled = False
+            self.img_post_widget.opacity = 0
+            self.img_post_widget.disabled = True
+            self.vid_post_widget.opacity = 0
+            self.vid_post_widget.disabled = True
+
+"""
     def add_vid_widget(self):
         vid = Video(id='vid_post',pos_hint={"top":0.99,"x":0.001},
-                size_hint=[0.999,0.96])
+                size_hint=[0.999,0.96],source="")
         self.post_container.add_widget(vid)
     def add_img_widget(self):
         img = Image(id='img_post',pos_hint={"top":0.99,"x":0.001},
@@ -155,7 +179,7 @@ class PostWindow(Screen):
         txt = TextInput(id='paraText',text="Text underneath title",pos_hint={"top":0.99,"x":0.001},
                 size_hint=[0.999,0.96])
         self.post_container.add_widget(txt)
-
+"""
 
 class AnalyticWindow(Screen):
     pass
@@ -165,25 +189,28 @@ class WindowManager(ScreenManager):
     post_window = ObjectProperty(None)
     analyse_window = ObjectProperty(None)
 
-kv = Builder.load_file("GUI.kv")
+#kv = Builder.load_file("GUI.kv") #maybe this is the problem?? getting different behaviour doing this in build
 
 class GUIApp(App):
     def build(self):
+        #start = StartUpWindow()
         Window.bind(on_dropfile=self._on_file_drop)
-        return kv
+        return WindowManager()
     def _on_file_drop(self, widget, file_path):
         if self.root.current == "post":
             post_type = self.root.post_window.post_type
             print(post_type)
             temp = str(file_path).replace("\'","")
             self.file_path = temp[1:len(temp)]
-            if post_type == 'vid':    
-                print(self.file_path)
-                self.root.post_window.child.
+            if post_type == 'vid':
+                self.root.get_screen('post').ids.vid_post.source = self.file_path
+                print("SOURCE: ",self.root.get_screen('post').ids.vid_post.source)
+                self.root.get_screen('post').ids.vid_post.state = 'play'
+                print("WIDGET ",self.root.post_window.vid_post_widget,"\n STATE: ",self.root.post_window.vid_post_widget.state)    
+                
             elif post_type == 'img':
                 print(self.file_path)
-                self.root.post_window.
-            return
+                self.root.get_screen('post').ids.img_post_widget.source = self.file_path
 
 if __name__ == '__main__':
     GUIApp().run()
