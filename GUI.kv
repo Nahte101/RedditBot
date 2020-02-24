@@ -71,11 +71,12 @@
 
 <PostWindow>:
     name: "post"
-    post_type:
+    post_type: "txt"
     post_container: post_container 
     text_post_widget: paraText
     vid_post_widget: vid_post
     img_post_widget: img_post
+    title: title
 
     GridLayout:
         cols: 4
@@ -91,24 +92,26 @@
             text: "Subreddit Name: "
         TextInput:
             id: newSub
+            text: ""
             multiline: False
         Button:
             text:"Change"
     GridLayout:
         pos_hint: {"top":0.90,"x":0.02}
         size_hint: (0.96,0.85)
-        spacing: [1,0]
+        spacing: [1,1]
         cols:1
         TextInput:
-            text: "Title"
+            id: title
             size_hint: [0.2,0.1]
+            text: ""
         FloatLayout:
             id: post_container
-            Video:
+            Video:#add default img to show you can drag and drop
                 id:vid_post
                 pos_hint:{"top":0.99,"x":0.001}
                 size_hint:[0.999,0.96]
-            Image:
+            Image:#add default img to show you can drag and drop
                 id:img_post
                 pos_hint:{"top":0.99,"x":0.001}
                 size_hint:[0.999,0.96]
@@ -116,7 +119,6 @@
                 pos_hint:{"top":0.99,"x":0.001}
                 size_hint: [0.999,0.96]
                 id: paraText
-                text: "Text underneath title"
         GridLayout:
             size_hint: [0.2,0.1]
             cols: 3
@@ -138,6 +140,14 @@
                     self.parent.parent.parent.post_type = 'vid'
                     self.parent.parent.parent.focus_main_widget()
                     #self.parent.parent.parent.change_post_type()
+        GridLayout:
+            cols:2
+            size_hint: [0.2,0.1]
+            Button:
+                text:"Post"
+                on_release: self.parent.parent.parent.construct_JSON()
+            Button:
+                text:"Delay Post"
 
             
 <AnalyticWindow>:

@@ -1,11 +1,11 @@
 import praw
 import time
+import json
+import base64
+from io import BytesIO
+
 from extrafunctions import checkTimeArraysEqual
 from threadManger import ThreadManager
-
-"""Things to add
--MultiThreading
--MultiProcessing"""
 
 class Post:#An object that stores a post
     def __init__(self,title,postType=None,txt=None,filePath=None):
@@ -13,6 +13,17 @@ class Post:#An object that stores a post
         self.postType = postType
         self.txt = txt
         self.filePath = filePath
+    def to_JSON(self):
+        if self.filePath != None:
+            f = open(self.filePath,'rb')
+            file_extension = self.filePath.split(".")[1]
+            file_contents = base64.b64encode(f.read()).decode('utf-8')
+            f.close()
+        else:
+            file_extension = None
+            file_contents = None
+        obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension}
+        print(json.dumps(obj_dict,indent=2))
     
 class Poster:#Object that posts
     def __init__(self, subreddit):

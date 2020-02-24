@@ -4,10 +4,6 @@ import ast
 from extrafunctions import checkTimeArraysEqual
 from threadManger import ThreadManager
 
-"""Things to add:
--MultiThreading
--MultiProcessing
-"""
 
 class Analytic:
     def __init__(self, subreddit):

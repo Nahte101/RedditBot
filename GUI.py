@@ -8,10 +8,16 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
+from post import Post
 
 import praw
 
 reddit = None
+
+"""
+-Add option to have a tray application/do the waiting in the background or send it to a server to post it
+-Maybe intergrate with amazon lambda
+"""
 
 class StartUpWindow(Screen):
 
@@ -26,7 +32,7 @@ class StartUpWindow(Screen):
 
     StageTwoWidgetList = ListProperty([])
 
-    def login(self, username,password):
+    def login(self, username,password):#Doesn't really work
         try:
             global reddit
             reddit = praw.Reddit(user_agent="joe",
@@ -128,7 +134,7 @@ class PostWindow(Screen):
     img_post_widget = ObjectProperty(None)
     vid_post_widget = ObjectProperty(None)
     post_container = ObjectProperty(None)
-
+    title = ObjectProperty(None)
 
     def change_post_type(self, post_type=None):
         if post_type == None:
@@ -165,6 +171,16 @@ class PostWindow(Screen):
             self.img_post_widget.disabled = True
             self.vid_post_widget.opacity = 0
             self.vid_post_widget.disabled = True
+
+    def construct_JSON(self):
+        if self.post_type == "img":
+            post = Post(self.title.text,self.post_type,txt=None,filePath=self.img_post_widget.source)
+        elif self.post_type == "vid":
+            post = Post(self.title.text,self.post_type,txt=None,filePath=self.vid_post_widget.source)
+        else:
+            post = Post(self.title.text,self.post_type,txt=self.text_post_widget.text)
+        print(post.to_JSON())
+        #construct a post obj then make the JSON then print it for now
 
 class AnalyticWindow(Screen):
     pass
