@@ -13,7 +13,7 @@ class Post:#An object that stores a post
         self.postType = postType
         self.txt = txt
         self.filePath = filePath
-    def to_JSON(self):
+    def to_JSON(self,time_delayed = False,time_to_post=None): 
         if self.filePath != None:
             f = open(self.filePath,'rb')
             file_extension = self.filePath.split(".")[1]
@@ -22,7 +22,10 @@ class Post:#An object that stores a post
         else:
             file_extension = None
             file_contents = None
-        obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension}
+        if not time_delayed:
+            obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension,"timeDelayed":time_delayed}
+        else:
+            obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension,"timeDelayed":time_delayed,"timeToPost":time_to_post}
         print(json.dumps(obj_dict,indent=2))
     
 class Poster:#Object that posts
