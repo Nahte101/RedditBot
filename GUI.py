@@ -1,6 +1,7 @@
 from kivy.app import App
 from kivy.properties import ObjectProperty, ListProperty, StringProperty
 from kivy.lang import Builder
+from kivy.uix.gridlayout import GridLayout
 from kivy.core.window import Window
 from kivy.uix.image import Image
 from kivy.uix.video import Video
@@ -8,7 +9,10 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.screenmanager import ScreenManager, Screen
+
 from post import Post
+
+from functools import partial
 
 import praw
 
@@ -136,6 +140,8 @@ class PostWindow(Screen):
     post_container = ObjectProperty(None)
     title = ObjectProperty(None)
 
+    post_layout = ObjectProperty(None)
+
     def change_post_type(self, post_type=None):
         if post_type == None:
             post_type = self.post_type
@@ -172,15 +178,43 @@ class PostWindow(Screen):
             self.vid_post_widget.opacity = 0
             self.vid_post_widget.disabled = True
 
-    def construct_JSON(self):
+    def remove_time_post_widgets(self,*args):
+        self.post_layout.remove_widget(self.time_to_post_grid)
+        self.post_layout.remove_widget(self.time_post_button_layout)
+
+    def add_time_post_widgets(self):
+        self.time_to_post_grid = GridLayout(cols=2,size_hint=[0.2,0.1])
+        self.time_to_post_grid.add_widget(Label(text="Time to be posted mm:dd:hh:mm "))
+        self.time_to_post_inp = TextInput(id="time_to_post")
+        self.time_to_post_grid.add_widget(self.time_to_post_inp)
+
+        self.post_layout.add_widget(self.time_to_post_grid)
+
+        self.time_post_button_layout = GridLayout(cols=2,size_hint=[0.2,0.1],id="time_post_buttons")
+        back_btn = Button(text="Back")
+        back_btn.bind(on_press=self.remove_time_post_widgets)
+        self.time_post_button_layout.add_widget(back_btn)
+
+        confirm_btn = Button(text="Confirm")
+        confirm_btn.bind(on_press=partial(self.construct_time_delayed_JSON))
+        self.time_post_button_layout.add_widget(confirm_btn)
+
+        self.post_layout.add_widget(self.time_post_button_layout)
+
+    def construct_time_delayed_JSON(self,*args):
+        time_to_post = self.time_to_post_inp.text
+        self.construct_JSON(True,time_to_post)
+
+    def construct_JSON(self,time_delayed = False, time_to_post = None,*args):
         if self.post_type == "img":
             post = Post(self.title.text,self.post_type,txt=None,filePath=self.img_post_widget.source)
         elif self.post_type == "vid":
             post = Post(self.title.text,self.post_type,txt=None,filePath=self.vid_post_widget.source)
         else:
             post = Post(self.title.text,self.post_type,txt=self.text_post_widget.text)
-        print(post.to_JSON())
-        #construct a post obj then make the JSON then print it for now
+        
+        return post.to_JSON(time_delayed,time_to_post)
+
 
 class AnalyticWindow(Screen):
     pass

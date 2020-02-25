@@ -22,11 +22,8 @@ class Post:#An object that stores a post
         else:
             file_extension = None
             file_contents = None
-        if not time_delayed:
-            obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension,"timeDelayed":time_delayed}
-        else:
-            obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension,"timeDelayed":time_delayed,"timeToPost":time_to_post}
-        print(json.dumps(obj_dict,indent=2))
+        obj_dict = {"title": self.title,"postType":self.postType,"txt":self.txt,"file":file_contents,"fileExtension":file_extension,"timeDelayed":time_delayed,"timeToPost":time_to_post}
+        json.dumps(obj_dict,indent=2)
     
 class Poster:#Object that posts
     def __init__(self, subreddit):

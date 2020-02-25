@@ -77,6 +77,7 @@
     vid_post_widget: vid_post
     img_post_widget: img_post
     title: title
+    post_layout:post_layout
 
     GridLayout:
         cols: 4
@@ -101,10 +102,11 @@
         size_hint: (0.96,0.85)
         spacing: [1,1]
         cols:1
+        id: post_layout
         TextInput:
             id: title
             size_hint: [0.2,0.1]
-            text: ""
+            text: "Title"
         FloatLayout:
             id: post_container
             Video:#add default img to show you can drag and drop
@@ -119,6 +121,7 @@
                 pos_hint:{"top":0.99,"x":0.001}
                 size_hint: [0.999,0.96]
                 id: paraText
+                text:"Text below title"
         GridLayout:
             size_hint: [0.2,0.1]
             cols: 3
@@ -127,28 +130,25 @@
                 on_release:
                     self.parent.parent.parent.post_type = 'txt'
                     self.parent.parent.parent.focus_main_widget()
-                    #self.parent.parent.parent.change_post_type()
             Button:
                 text:"Img"
                 on_release:
                     self.parent.parent.parent.post_type = 'img'
                     self.parent.parent.parent.focus_main_widget()
-                    #self.parent.parent.parent.change_post_type()
             Button:
                 text:"Vid"
                 on_release:
                     self.parent.parent.parent.post_type = 'vid'
                     self.parent.parent.parent.focus_main_widget()
-                    #self.parent.parent.parent.change_post_type()
         GridLayout:
             cols:2
             size_hint: [0.2,0.1]
+            id: post_buttons
             Button:
                 text:"Post"
                 on_release: self.parent.parent.parent.construct_JSON()
             Button:
                 text:"Delay Post"
-
-            
+                on_release:self.parent.parent.parent.add_time_post_widgets()
 <AnalyticWindow>:
     name: "analyse"
